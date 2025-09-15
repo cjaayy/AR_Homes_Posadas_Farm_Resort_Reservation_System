@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>AR Homes Posadas Farm Resort - Login</title>
+
+    <!-- Favicon -->
+    <link rel="icon" href="favicon.ico" type="image/x-icon" />
+    <link
+      rel="icon"
+      type="image/png"
+      sizes="32x32"
+      href="logo/ChatGPT Image Sep 15, 2025, 10_25_25 PM.png"
+    />
+    <link
+      rel="icon"
+      type="image/png"
+      sizes="16x16"
+      href="logo/ChatGPT Image Sep 15, 2025, 10_25_25 PM.png"
+    />
+    <link
+      rel="apple-touch-icon"
+      sizes="180x180"
+      href="logo/ChatGPT Image Sep 15, 2025, 10_25_25 PM.png"
+    />
+    <link
+      rel="shortcut icon"
+      href="logo/ChatGPT Image Sep 15, 2025, 10_25_25 PM.png"
+    />
+    <link rel="manifest" href="site.webmanifest" />
+
+    <!-- Meta tags for better SEO and PWA support -->
+    <meta name="theme-color" content="#667eea" />
+    <meta
+      name="description"
+      content="AR Homes Posadas Farm Resort - Premium resort reservation system. Experience luxury accommodations and world-class amenities."
+    />
+    <meta
+      name="keywords"
+      content="resort, accommodation, booking, AR Homes, Posadas Farm, luxury resort"
+    />
+    <meta name="author" content="AR Homes Posadas Farm Resort" />
+
+    <!-- Open Graph meta tags for social sharing -->
+    <meta property="og:title" content="AR Homes Posadas Farm Resort - Login" />
+    <meta
+      property="og:description"
+      content="Experience luxury at AR Homes Posadas Farm Resort. Book your perfect getaway today."
+    />
+    <meta
+      property="og:image"
+      content="logo/ChatGPT Image Sep 15, 2025, 10_25_25 PM.png"
+    />
+    <meta property="og:type" content="website" />
+
+    <link rel="stylesheet" href="styles.css" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
+    />
+  </head>
+  <body>
+    <div class="main-container">
+      <!-- Left Side - Image Carousel -->
+      <div class="image-section">
+        <div class="image-slideshow">
+          <div class="slide active">
+            <img
+              src="images/545611560_1324092662718848_8811536535004180762_n.jpg"
+              alt="AR Homes Resort View"
+            />
+            <div class="slide-overlay">
+              <h3>Welcome to AR Homes</h3>
+              <p>
+                Experience the beauty and tranquility of Posadas Farm Resort
+              </p>
+            </div>
+          </div>
+          <div class="slide">
+            <img
+              src="images/546182776_2167385133738763_7006991891791172725_n.jpg"
+              alt="Resort Amenities"
+            />
+            <div class="slide-overlay">
+              <h3>Premium Amenities</h3>
+              <p>Discover our world-class facilities and services</p>
+            </div>
+          </div>
+          <div class="slide">
+            <img
+              src="images/546238992_684641691315373_7119956179300816560_n.jpg"
+              alt="Resort Accommodations"
+            />
+            <div class="slide-overlay">
+              <h3>Comfortable Stay</h3>
+              <p>Relax in our beautifully designed accommodations</p>
+            </div>
+          </div>
+          <div class="slide">
+            <img
+              src="images/546260243_2896334557423631_287976220203457252_n.jpg"
+              alt="Resort Activities"
+            />
+            <div class="slide-overlay">
+              <h3>Memorable Experiences</h3>
+              <p>Create unforgettable memories with our resort activities</p>
+            </div>
+          </div>
+          <div class="slide">
+            <img
+              src="images/548030469_1213549567474869_7105283967168999470_n.jpg"
+              alt="Resort Paradise"
+            />
+            <div class="slide-overlay">
+              <h3>Tropical Paradise</h3>
+              <p>Escape to your perfect getaway destination</p>
+            </div>
+          </div>
+        </div>
+        <div class="slideshow-indicators">
+          <span class="indicator active" data-slide="0"></span>
+          <span class="indicator" data-slide="1"></span>
+          <span class="indicator" data-slide="2"></span>
+          <span class="indicator" data-slide="3"></span>
+          <span class="indicator" data-slide="4"></span>
+        </div>
+      </div>
+
+      <!-- Right Side - Login Form -->
+      <div class="login-section">
+        <div class="login-container">
+          <div class="header">
+            <div class="logo">
+              <img
+                src="logo/ChatGPT Image Sep 15, 2025, 10_25_25 PM.png"
+                alt="AR Homes Posadas Farm Resort Logo"
+              />
+            </div>
+            <h1 class="title">AR Homes Posadas Farm Resort</h1>
+            <p class="subtitle">Reservation System</p>
+          </div>
+
+          <div class="login-form">
+            <h2>Welcome Back</h2>
+            <p class="form-description">Please sign in to your account</p>
+
+            <form id="loginForm">
+              <div class="input-group">
+                <div class="input-wrapper">
+                  <i class="fas fa-user"></i>
+                  <input
+                    type="email"
+                    id="email"
+                    name="email"
+                    placeholder="Username or Email"
+                    required
+                  />
+                </div>
+              </div>
+
+              <div class="input-group">
+                <div class="input-wrapper">
+                  <i class="fas fa-lock"></i>
+                  <input
+                    type="password"
+                    id="password"
+                    name="password"
+                    placeholder="Password"
+                    required
+                  />
+                  <button
+                    type="button"
+                    class="password-toggle"
+                    onclick="togglePassword()"
+                  >
+                    <i class="fas fa-eye" id="toggleIcon"></i>
+                  </button>
+                </div>
+              </div>
+
+              <div class="remember-forgot">
+                <label class="remember-me">
+                  <input type="checkbox" id="remember" />
+                  <span class="checkmark"></span>
+                  Remember me
+                </label>
+                <a href="#" class="forgot-link">Forgot password?</a>
+              </div>
+
+              <button type="submit" class="login-btn">
+                <span>Sign In</span>
+                <i class="fas fa-arrow-right"></i>
+              </button>
+            </form>
+
+            <div class="signup-link">
+              <p>Don't have an account? <a href="#">Register</a></p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script src="script.js"></script>
+  </body>
+</html>
