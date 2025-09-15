@@ -257,6 +257,11 @@ body {
   outline: none;
 }
 
+/* Specific padding for password input to accommodate toggle button */
+.input-wrapper input[type="password"] {
+  padding-right: 45px;
+}
+
 .input-wrapper input:focus {
   border-color: #667eea;
   background: white;
@@ -269,18 +274,28 @@ body {
 
 .password-toggle {
   position: absolute;
-  right: 15px;
+  right: 12px;
+  top: 50%;
+  transform: translateY(-50%);
   background: none;
   border: none;
   color: #666;
   cursor: pointer;
-  padding: 5px;
-  font-size: 0.9rem;
+  padding: 4px;
+  font-size: 0.85rem;
   transition: color 0.3s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 24px;
+  height: 24px;
+  border-radius: 4px;
+  z-index: 3;
 }
 
 .password-toggle:hover {
   color: #667eea;
+  background: rgba(102, 126, 234, 0.1);
 }
 
 /* Remember Me and Forgot Password */
@@ -590,6 +605,17 @@ body {
 
   .input-wrapper input {
     padding: 12px 12px 12px 40px;
+  }
+
+  .input-wrapper input[type="password"] {
+    padding-right: 40px;
+  }
+
+  .password-toggle {
+    right: 10px;
+    width: 20px;
+    height: 20px;
+    font-size: 0.8rem;
   }
 
   .login-btn {
