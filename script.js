@@ -303,15 +303,7 @@ document.querySelector(".forgot-link").addEventListener("click", function (e) {
   );
 });
 
-// Handle "Register" link
-document
-  .querySelector(".signup-link a")
-  .addEventListener("click", function (e) {
-    e.preventDefault();
-    alert(
-      "Registration page would be implemented here.\n\nIn a real application, this would redirect to a registration form."
-    );
-  });
+// Register link now works with standard HTML navigation to registration.html
 
 // Add keyboard navigation
 document.addEventListener("keydown", function (e) {
