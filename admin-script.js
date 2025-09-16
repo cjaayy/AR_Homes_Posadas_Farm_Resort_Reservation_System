@@ -109,20 +109,75 @@ function removeSidebarOverlay() {
 // ===== LOGOUT FUNCTIONALITY =====
 
 function logout() {
-  // Show confirmation dialog
-  if (confirm("Are you sure you want to logout?")) {
-    // Add logout animation
-    document.body.style.opacity = "0";
-    document.body.style.transition = "opacity 0.3s ease";
+  // Show logout modal instead of confirm dialog
+  showLogoutModal();
+}
 
+// Show logout modal
+function showLogoutModal() {
+  const modal = document.getElementById('logoutModal');
+  modal.classList.add('show');
+  modal.style.display = 'flex';
+  
+  // Add event listener to overlay for closing modal
+  const overlay = modal.querySelector('.logout-modal-overlay');
+  overlay.onclick = hideLogoutModal;
+  
+  // Prevent body scroll when modal is open
+  document.body.style.overflow = 'hidden';
+}
+
+// Hide logout modal
+function hideLogoutModal() {
+  const modal = document.getElementById('logoutModal');
+  modal.classList.add('hide');
+  
+  // Remove modal after animation
+  setTimeout(() => {
+    modal.classList.remove('show', 'hide');
+    modal.style.display = 'none';
+    document.body.style.overflow = 'auto';
+  }, 300);
+}
+
+// Confirm logout action
+function confirmLogout() {
+  // Hide modal first
+  hideLogoutModal();
+  
+  // Add logout animation to entire page
+  setTimeout(() => {
+    document.body.style.opacity = "0";
+    document.body.style.transition = "opacity 0.5s ease";
+    
+    // Show loading state
+    const confirmBtn = document.querySelector('.logout-confirm-btn');
+    if (confirmBtn) {
+      confirmBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> <span>Logging out...</span>';
+      confirmBtn.disabled = true;
+    }
+    
     // Simulate logout process
     setTimeout(() => {
-      // In a real application, this would redirect to login page
-      // For now, we'll redirect to the login page
+      // Clear any stored session data
+      localStorage.removeItem('adminSession');
+      sessionStorage.clear();
+      
+      // Redirect to login page
       window.location.href = "index.html";
-    }, 300);
-  }
+    }, 800);
+  }, 100);
 }
+
+// Handle ESC key to close modal
+document.addEventListener('keydown', function(e) {
+  if (e.key === 'Escape') {
+    const modal = document.getElementById('logoutModal');
+    if (modal && modal.classList.contains('show')) {
+      hideLogoutModal();
+    }
+  }
+});
 
 // ===== RESPONSIVE FUNCTIONALITY =====
 

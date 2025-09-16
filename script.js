@@ -154,18 +154,13 @@ function handleLogin(email, password) {
       password.length
     );
 
-    // Check for admin credentials - multiple possible formats
-    const isAdminEmail = email.trim().toLowerCase() === "admin@resort.com";
+    // Check for admin credentials - accept both username and email
+    const cleanEmail = email.trim().toLowerCase();
+    const isAdminLogin =
+      cleanEmail === "admin@resort.com" || cleanEmail === "admin";
     const isAdminPassword = password.trim() === "admin123";
 
-    console.log(
-      "Email check:",
-      email.trim().toLowerCase(),
-      "===",
-      "admin@resort.com",
-      "Result:",
-      isAdminEmail
-    );
+    console.log("Login check:", cleanEmail, "is admin:", isAdminLogin);
     console.log(
       "Password check:",
       password.trim(),
@@ -175,7 +170,7 @@ function handleLogin(email, password) {
       isAdminPassword
     );
 
-    if (isAdminEmail && isAdminPassword) {
+    if (isAdminLogin && isAdminPassword) {
       console.log("✅ Admin login successful - redirecting to dashboard");
       // Add success animation
       loginBtn.classList.add("success");
@@ -193,7 +188,7 @@ function handleLogin(email, password) {
 
       // Show success message for non-admin users
       alert(
-        `Welcome! Login successful for: ${email}\n\nNote: This is a frontend-only demo. In a real application, this would connect to a backend server.\n\nTip: Use 'admin@resort.com' / 'admin123' to access the admin dashboard.`
+        `Welcome! Login successful for: ${email}\n\nNote: This is a frontend-only demo. In a real application, this would connect to a backend server.\n\nTip: Use 'admin' (username) or 'admin@resort.com' (email) with password 'admin123' to access the admin dashboard.`
       );
 
       // Reset form after success

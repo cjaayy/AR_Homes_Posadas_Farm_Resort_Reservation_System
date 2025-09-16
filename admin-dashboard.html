@@ -413,6 +413,33 @@
       </main>
     </div>
 
+    <!-- Logout Modal -->
+    <div id="logoutModal" class="logout-modal">
+      <div class="logout-modal-overlay"></div>
+      <div class="logout-modal-content">
+        <div class="logout-modal-header">
+          <div class="logout-icon">
+            <i class="fas fa-sign-out-alt"></i>
+          </div>
+          <h3>Confirm Logout</h3>
+        </div>
+        <div class="logout-modal-body">
+          <p>Are you sure you want to logout from your admin session?</p>
+          <p class="logout-warning">You will need to login again to access the dashboard.</p>
+        </div>
+        <div class="logout-modal-footer">
+          <button class="logout-cancel-btn" onclick="hideLogoutModal()">
+            <i class="fas fa-times"></i>
+            <span>Cancel</span>
+          </button>
+          <button class="logout-confirm-btn" onclick="confirmLogout()">
+            <i class="fas fa-sign-out-alt"></i>
+            <span>Logout</span>
+          </button>
+        </div>
+      </div>
+    </div>
+
     <script src="admin-script.js"></script>
   </body>
 </html>
