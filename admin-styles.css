@@ -1020,13 +1020,17 @@ body {
 }
 
 .logout-modal-header::before {
-  content: '';
+  content: "";
   position: absolute;
   top: 0;
   left: 0;
   right: 0;
   bottom: 0;
-  background: linear-gradient(45deg, rgba(255, 255, 255, 0.1) 0%, transparent 100%);
+  background: linear-gradient(
+    45deg,
+    rgba(255, 255, 255, 0.1) 0%,
+    transparent 100%
+  );
   pointer-events: none;
 }
 
@@ -1171,33 +1175,33 @@ body {
     max-width: 350px;
     margin: 1rem;
   }
-  
+
   .logout-modal-header {
     padding: 1.5rem;
   }
-  
+
   .logout-icon {
     width: 60px;
     height: 60px;
   }
-  
+
   .logout-icon i {
     font-size: 1.5rem;
   }
-  
+
   .logout-modal-header h3 {
     font-size: 1.3rem;
   }
-  
+
   .logout-modal-body {
     padding: 1.5rem;
   }
-  
+
   .logout-modal-footer {
     flex-direction: column;
     padding: 1rem 1.5rem 1.5rem;
   }
-  
+
   .logout-cancel-btn,
   .logout-confirm-btn {
     width: 100%;
