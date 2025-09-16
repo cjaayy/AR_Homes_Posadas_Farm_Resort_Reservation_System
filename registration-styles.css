@@ -369,12 +369,12 @@ body {
     max-width: 550px;
     padding: 30px 20px;
   }
-  
+
   .form-row {
     grid-template-columns: 1fr;
     gap: 15px;
   }
-  
+
   .system-name {
     font-size: 2rem;
   }
@@ -386,7 +386,7 @@ body {
     grid-template-columns: 1fr;
     gap: 15px;
   }
-  
+
   .form-container {
     max-width: 500px;
     padding: 25px 15px;
