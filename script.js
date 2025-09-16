@@ -145,19 +145,63 @@ function handleLogin(email, password) {
     loginBtn.classList.remove("loading");
     loginBtn.disabled = false;
 
-    // Add success animation
-    loginBtn.classList.add("success");
-
-    // Show success message
-    alert(
-      `Welcome! Login successful for: ${email}\n\nNote: This is a frontend-only demo. In a real application, this would connect to a backend server.`
+    // Debug: Log the credentials being checked
+    console.log("Checking credentials:", { email, password });
+    console.log(
+      "Email length:",
+      email.length,
+      "Password length:",
+      password.length
     );
 
-    // Reset form after success
-    setTimeout(() => {
-      loginForm.reset();
-      loginBtn.classList.remove("success");
-    }, 2000);
+    // Check for admin credentials - multiple possible formats
+    const isAdminEmail = email.trim().toLowerCase() === "admin@resort.com";
+    const isAdminPassword = password.trim() === "admin123";
+
+    console.log(
+      "Email check:",
+      email.trim().toLowerCase(),
+      "===",
+      "admin@resort.com",
+      "Result:",
+      isAdminEmail
+    );
+    console.log(
+      "Password check:",
+      password.trim(),
+      "===",
+      "admin123",
+      "Result:",
+      isAdminPassword
+    );
+
+    if (isAdminEmail && isAdminPassword) {
+      console.log("✅ Admin login successful - redirecting to dashboard");
+      // Add success animation
+      loginBtn.classList.add("success");
+      loginBtn.innerHTML = '<i class="fas fa-check"></i> Admin Access Granted!';
+
+      // Direct redirect to admin dashboard without popup
+      setTimeout(() => {
+        console.log("Redirecting to admin dashboard...");
+        window.location.href = "admin-dashboard.html";
+      }, 1000);
+    } else {
+      console.log("❌ Not admin credentials - showing demo message");
+      // Add success animation for demo
+      loginBtn.classList.add("success");
+
+      // Show success message for non-admin users
+      alert(
+        `Welcome! Login successful for: ${email}\n\nNote: This is a frontend-only demo. In a real application, this would connect to a backend server.\n\nTip: Use 'admin@resort.com' / 'admin123' to access the admin dashboard.`
+      );
+
+      // Reset form after success
+      setTimeout(() => {
+        loginForm.reset();
+        loginBtn.classList.remove("success");
+      }, 2000);
+    }
   }, 1500);
 }
 
