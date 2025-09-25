@@ -1,0 +1,709 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>User Dashboard - AR Homes Posadas Farm Resort</title>
+
+    <!-- Favicon -->
+    <link rel="icon" href="favicon.ico" type="image/x-icon" />
+    <link
+      rel="icon"
+      type="image/png"
+      sizes="32x32"
+      href="logo/ChatGPT Image Sep 15, 2025, 10_25_25 PM.png"
+    />
+    <link
+      rel="icon"
+      type="image/png"
+      sizes="16x16"
+      href="logo/ChatGPT Image Sep 15, 2025, 10_25_25 PM.png"
+    />
+    <link
+      rel="apple-touch-icon"
+      sizes="180x180"
+      href="logo/ChatGPT Image Sep 15, 2025, 10_25_25 PM.png"
+    />
+    <link
+      rel="shortcut icon"
+      href="logo/ChatGPT Image Sep 15, 2025, 10_25_25 PM.png"
+    />
+    <link rel="manifest" href="site.webmanifest" />
+
+    <!-- Meta tags -->
+    <meta name="theme-color" content="#667eea" />
+    <meta
+      name="description"
+      content="User Dashboard for AR Homes Posadas Farm Resort - Manage your reservations and profile."
+    />
+    <meta
+      name="keywords"
+      content="dashboard, user, resort reservations, AR Homes, Posadas Farm"
+    />
+    <meta name="author" content="AR Homes Posadas Farm Resort" />
+
+    <!-- Open Graph meta tags for social sharing -->
+    <meta
+      property="og:title"
+      content="User Dashboard - AR Homes Posadas Farm Resort"
+    />
+    <meta
+      property="og:description"
+      content="Manage your reservations and profile at AR Homes Posadas Farm Resort."
+    />
+    <meta
+      property="og:image"
+      content="logo/ChatGPT Image Sep 15, 2025, 10_25_25 PM.png"
+    />
+    <meta property="og:url" content="#" />
+    <meta property="og:type" content="website" />
+
+    <!-- Twitter Card meta tags -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta
+      name="twitter:title"
+      content="User Dashboard - AR Homes Posadas Farm Resort"
+    />
+    <meta
+      name="twitter:description"
+      content="Manage your reservations and profile at AR Homes Posadas Farm Resort."
+    />
+    <meta
+      name="twitter:image"
+      content="logo/ChatGPT Image Sep 15, 2025, 10_25_25 PM.png"
+    />
+
+    <!-- CSS -->
+    <link rel="stylesheet" href="dashboard-styles.css" />
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+
+    <!-- Font Awesome for icons -->
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    />
+  </head>
+
+  <body>
+    <div class="dashboard-container">
+      <!-- Header -->
+      <header class="dashboard-header">
+        <div class="header-left">
+          <div class="logo">
+            <img
+              src="logo/ChatGPT Image Sep 15, 2025, 10_25_25 PM.png"
+              alt="AR Homes Resort Logo"
+            />
+          </div>
+          <div class="resort-info">
+            <h1>AR Homes Posadas Farm Resort</h1>
+            <p>Guest Dashboard</p>
+          </div>
+        </div>
+        <div class="header-right">
+          <div class="user-profile">
+            <div class="profile-info">
+              <span class="user-name" id="userName">John Doe</span>
+              <span class="user-role">Guest</span>
+            </div>
+            <div class="profile-avatar">
+              <i class="fas fa-user"></i>
+            </div>
+          </div>
+          <button class="logout-btn" onclick="logout()">
+            <i class="fas fa-sign-out-alt"></i>
+            <span>Logout</span>
+          </button>
+        </div>
+        <div class="mobile-toggle" onclick="toggleSidebar()">
+          <i class="fas fa-bars"></i>
+        </div>
+      </header>
+
+      <!-- Sidebar -->
+      <aside class="sidebar" id="sidebar">
+        <nav class="sidebar-nav">
+          <ul class="nav-menu">
+            <li class="nav-item active">
+              <a href="#dashboard" class="nav-link" data-section="dashboard">
+                <i class="fas fa-chart-line"></i>
+                <span>Dashboard</span>
+              </a>
+            </li>
+            <li class="nav-item">
+              <a
+                href="#make-reservation"
+                class="nav-link"
+                data-section="make-reservation"
+              >
+                <i class="fas fa-calendar-plus"></i>
+                <span>Make Reservation</span>
+              </a>
+            </li>
+            <li class="nav-item">
+              <a
+                href="#my-reservations"
+                class="nav-link"
+                data-section="my-reservations"
+              >
+                <i class="fas fa-calendar-check"></i>
+                <span>My Reservations</span>
+              </a>
+            </li>
+            <li class="nav-item">
+              <a href="#promotions" class="nav-link" data-section="promotions">
+                <i class="fas fa-tags"></i>
+                <span>Promotions</span>
+              </a>
+            </li>
+            <li class="nav-item">
+              <a href="#profile" class="nav-link" data-section="profile">
+                <i class="fas fa-user-cog"></i>
+                <span>Profile</span>
+              </a>
+            </li>
+          </ul>
+        </nav>
+      </aside>
+
+      <!-- Main Content -->
+      <main class="main-content">
+        <!-- Dashboard Section -->
+        <section id="dashboard" class="content-section active">
+          <div class="welcome-section">
+            <h2 class="welcome-message">
+              Welcome, <span id="welcomeUserName">John Doe</span>!
+            </h2>
+            <p class="welcome-subtitle">
+              Manage your reservations and explore our luxury resort amenities.
+            </p>
+          </div>
+
+          <!-- Summary Cards -->
+          <div class="stats-grid">
+            <div class="stats-card">
+              <div class="stats-icon">
+                <i class="fas fa-calendar-alt"></i>
+              </div>
+              <div class="stats-content">
+                <h3 class="stats-number" id="totalReservations">5</h3>
+                <p class="stats-label">Total Reservations</p>
+              </div>
+            </div>
+
+            <div class="stats-card">
+              <div class="stats-icon pending">
+                <i class="fas fa-clock"></i>
+              </div>
+              <div class="stats-content">
+                <h3 class="stats-number" id="pendingReservations">2</h3>
+                <p class="stats-label">Pending Reservations</p>
+              </div>
+            </div>
+
+            <div class="stats-card">
+              <div class="stats-icon approved">
+                <i class="fas fa-check-circle"></i>
+              </div>
+              <div class="stats-content">
+                <h3 class="stats-number" id="approvedReservations">3</h3>
+                <p class="stats-label">Approved Reservations</p>
+              </div>
+            </div>
+
+            <div class="stats-card">
+              <div class="stats-icon completed">
+                <i class="fas fa-star"></i>
+              </div>
+              <div class="stats-content">
+                <h3 class="stats-number" id="completedStays">8</h3>
+                <p class="stats-label">Completed Stays</p>
+              </div>
+            </div>
+          </div>
+
+          <!-- Quick Actions -->
+          <div class="quick-actions">
+            <div class="action-card">
+              <div class="action-content">
+                <h3>Ready for your next getaway?</h3>
+                <p>
+                  Book your perfect stay at our luxury resort with world-class
+                  amenities.
+                </p>
+                <button
+                  class="book-now-btn"
+                  onclick="showSection('make-reservation')"
+                >
+                  <i class="fas fa-calendar-plus"></i>
+                  Book Now
+                </button>
+              </div>
+              <div class="action-image">
+                <i class="fas fa-umbrella-beach"></i>
+              </div>
+            </div>
+          </div>
+
+          <!-- Recent Activity -->
+          <div class="recent-activity">
+            <h3>Recent Activity</h3>
+            <div class="activity-list">
+              <div class="activity-item">
+                <div class="activity-icon">
+                  <i class="fas fa-calendar-check"></i>
+                </div>
+                <div class="activity-content">
+                  <h4>Reservation Confirmed</h4>
+                  <p>
+                    Your booking for December 15-18, 2025 has been approved.
+                  </p>
+                  <span class="activity-date">2 days ago</span>
+                </div>
+              </div>
+              <div class="activity-item">
+                <div class="activity-icon">
+                  <i class="fas fa-edit"></i>
+                </div>
+                <div class="activity-content">
+                  <h4>Profile Updated</h4>
+                  <p>Your contact information has been successfully updated.</p>
+                  <span class="activity-date">1 week ago</span>
+                </div>
+              </div>
+              <div class="activity-item">
+                <div class="activity-icon">
+                  <i class="fas fa-star"></i>
+                </div>
+                <div class="activity-content">
+                  <h4>Stay Completed</h4>
+                  <p>
+                    Thank you for staying with us! We hope you enjoyed your
+                    experience.
+                  </p>
+                  <span class="activity-date">2 weeks ago</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- Make Reservation Section -->
+        <section id="make-reservation" class="content-section">
+          <div class="section-header">
+            <h2>Make a Reservation</h2>
+            <p>Book your perfect getaway at AR Homes Posadas Farm Resort</p>
+          </div>
+          <div class="reservation-form-container">
+            <form class="reservation-form">
+              <div class="form-group">
+                <label for="checkIn">Check-in Date</label>
+                <input type="date" id="checkIn" name="checkIn" required />
+              </div>
+              <div class="form-group">
+                <label for="checkOut">Check-out Date</label>
+                <input type="date" id="checkOut" name="checkOut" required />
+              </div>
+              <div class="form-group">
+                <label for="guests">Number of Guests</label>
+                <select id="guests" name="guests" required>
+                  <option value="">Select guests</option>
+                  <option value="1">1 Guest</option>
+                  <option value="2">2 Guests</option>
+                  <option value="3">3 Guests</option>
+                  <option value="4">4 Guests</option>
+                  <option value="5">5+ Guests</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label for="roomType">Room Type</label>
+                <select id="roomType" name="roomType" required>
+                  <option value="">Select room type</option>
+                  <option value="standard">Standard Room</option>
+                  <option value="deluxe">Deluxe Room</option>
+                  <option value="suite">Suite</option>
+                  <option value="villa">Private Villa</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label for="specialRequests">Special Requests</label>
+                <textarea
+                  id="specialRequests"
+                  name="specialRequests"
+                  rows="4"
+                  placeholder="Any special requests or preferences..."
+                ></textarea>
+              </div>
+              <button type="submit" class="submit-btn">
+                <i class="fas fa-calendar-plus"></i>
+                Submit Reservation
+              </button>
+            </form>
+          </div>
+        </section>
+
+        <!-- My Reservations Section -->
+        <section id="my-reservations" class="content-section">
+          <div class="section-header">
+            <h2>My Reservations</h2>
+            <p>View and manage your current and past reservations</p>
+          </div>
+          <div class="reservations-container">
+            <div class="reservation-card pending">
+              <div class="reservation-header">
+                <h3>December 15-18, 2025</h3>
+                <span class="status-badge pending">Pending</span>
+              </div>
+              <div class="reservation-details">
+                <p><i class="fas fa-bed"></i> Deluxe Room</p>
+                <p><i class="fas fa-users"></i> 2 Guests</p>
+                <p><i class="fas fa-calendar"></i> 3 Nights</p>
+              </div>
+              <div class="reservation-actions">
+                <button class="btn btn-secondary">View Details</button>
+                <button class="btn btn-danger">Cancel</button>
+              </div>
+            </div>
+
+            <div class="reservation-card approved">
+              <div class="reservation-header">
+                <h3>January 10-14, 2026</h3>
+                <span class="status-badge approved">Approved</span>
+              </div>
+              <div class="reservation-details">
+                <p><i class="fas fa-bed"></i> Suite</p>
+                <p><i class="fas fa-users"></i> 2 Guests</p>
+                <p><i class="fas fa-calendar"></i> 4 Nights</p>
+              </div>
+              <div class="reservation-actions">
+                <button class="btn btn-secondary">View Details</button>
+                <button class="btn btn-primary">Modify</button>
+              </div>
+            </div>
+
+            <div class="reservation-card completed">
+              <div class="reservation-header">
+                <h3>August 5-8, 2025</h3>
+                <span class="status-badge completed">Completed</span>
+              </div>
+              <div class="reservation-details">
+                <p><i class="fas fa-bed"></i> Standard Room</p>
+                <p><i class="fas fa-users"></i> 1 Guest</p>
+                <p><i class="fas fa-calendar"></i> 3 Nights</p>
+              </div>
+              <div class="reservation-actions">
+                <button class="btn btn-secondary">View Details</button>
+                <button class="btn btn-primary">Review Stay</button>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- Profile Section -->
+        <section id="profile" class="content-section">
+          <div class="section-header">
+            <h2>Profile Settings</h2>
+            <p>Manage your personal information and preferences</p>
+          </div>
+          <div class="profile-container">
+            <div class="profile-form-container">
+              <form class="profile-form">
+                <div class="form-row">
+                  <div class="form-group">
+                    <label for="firstName">First Name</label>
+                    <input
+                      type="text"
+                      id="firstName"
+                      name="firstName"
+                      value="John"
+                      required
+                    />
+                  </div>
+                  <div class="form-group">
+                    <label for="lastName">Last Name</label>
+                    <input
+                      type="text"
+                      id="lastName"
+                      name="lastName"
+                      value="Doe"
+                      required
+                    />
+                  </div>
+                </div>
+                <div class="form-group">
+                  <label for="email">Email Address</label>
+                  <input
+                    type="email"
+                    id="email"
+                    name="email"
+                    value="john.doe@example.com"
+                    required
+                  />
+                </div>
+                <div class="form-group">
+                  <label for="phone">Phone Number</label>
+                  <input
+                    type="tel"
+                    id="phone"
+                    name="phone"
+                    value="+1 (555) 123-4567"
+                    required
+                  />
+                </div>
+                <div class="form-group">
+                  <label for="address">Address</label>
+                  <textarea id="address" name="address" rows="3">
+123 Main Street, City, State 12345</textarea
+                  >
+                </div>
+                <div class="form-group">
+                  <label for="preferences">Preferences</label>
+                  <textarea
+                    id="preferences"
+                    name="preferences"
+                    rows="4"
+                    placeholder="Dietary restrictions, accessibility needs, special preferences..."
+                  ></textarea>
+                </div>
+                <button type="submit" class="submit-btn">
+                  <i class="fas fa-save"></i>
+                  Update Profile
+                </button>
+              </form>
+            </div>
+          </div>
+        </section>
+
+        <!-- Promotions Section -->
+        <section id="promotions" class="content-section">
+          <div class="section-header">
+            <h2>Exclusive Promotions</h2>
+            <p>
+              Discover amazing deals and special offers tailored just for you
+            </p>
+          </div>
+
+          <!-- Regular Customer Badge -->
+          <div class="loyalty-status" id="loyaltyStatus">
+            <div class="loyalty-badge">
+              <div class="badge-icon">
+                <i class="fas fa-crown"></i>
+              </div>
+              <div class="badge-content">
+                <h3>Gold Member</h3>
+                <p>
+                  You're a valued regular customer! Enjoy exclusive benefits and
+                  discounts.
+                </p>
+                <div class="loyalty-perks">
+                  <span class="perk"
+                    ><i class="fas fa-percent"></i> 15% Off All Bookings</span
+                  >
+                  <span class="perk"
+                    ><i class="fas fa-gift"></i> Complimentary Upgrades</span
+                  >
+                  <span class="perk"
+                    ><i class="fas fa-star"></i> Priority Support</span
+                  >
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Current Promotions -->
+          <div class="promotions-container">
+            <h3 class="promotions-title">Available Promotions</h3>
+            <div class="promotions-grid">
+              <!-- Early Bird Special -->
+              <div class="promo-card featured">
+                <div class="promo-ribbon">Featured</div>
+                <div class="promo-header">
+                  <div class="promo-icon">
+                    <i class="fas fa-clock"></i>
+                  </div>
+                  <h4>Early Bird Special</h4>
+                </div>
+                <div class="promo-content">
+                  <div class="discount">25% OFF</div>
+                  <p>
+                    Book 30 days in advance and save big on your next getaway!
+                  </p>
+                  <div class="promo-details">
+                    <span
+                      ><i class="fas fa-calendar"></i> Valid until Dec 31,
+                      2025</span
+                    >
+                    <span><i class="fas fa-bed"></i> All room types</span>
+                  </div>
+                </div>
+                <button class="promo-btn" onclick="applyPromo('EARLYBIRD25')">
+                  <i class="fas fa-ticket-alt"></i>
+                  Apply Promo
+                </button>
+              </div>
+
+              <!-- Weekend Getaway -->
+              <div class="promo-card">
+                <div class="promo-header">
+                  <div class="promo-icon weekend">
+                    <i class="fas fa-moon"></i>
+                  </div>
+                  <h4>Weekend Escape</h4>
+                </div>
+                <div class="promo-content">
+                  <div class="discount">20% OFF</div>
+                  <p>Perfect for weekend warriors! Book Friday-Sunday stays.</p>
+                  <div class="promo-details">
+                    <span
+                      ><i class="fas fa-calendar-week"></i> Weekends only</span
+                    >
+                    <span><i class="fas fa-users"></i> Up to 4 guests</span>
+                  </div>
+                </div>
+                <button class="promo-btn" onclick="applyPromo('WEEKEND20')">
+                  <i class="fas fa-ticket-alt"></i>
+                  Apply Promo
+                </button>
+              </div>
+
+              <!-- Family Package -->
+              <div class="promo-card">
+                <div class="promo-header">
+                  <div class="promo-icon family">
+                    <i class="fas fa-heart"></i>
+                  </div>
+                  <h4>Family Package</h4>
+                </div>
+                <div class="promo-content">
+                  <div class="discount">30% OFF</div>
+                  <p>
+                    Bring the whole family! Includes kids' activities and meals.
+                  </p>
+                  <div class="promo-details">
+                    <span><i class="fas fa-child"></i> Kids under 12 free</span>
+                    <span
+                      ><i class="fas fa-utensils"></i> Breakfast included</span
+                    >
+                  </div>
+                </div>
+                <button class="promo-btn" onclick="applyPromo('FAMILY30')">
+                  <i class="fas fa-ticket-alt"></i>
+                  Apply Promo
+                </button>
+              </div>
+
+              <!-- Regular Customer Exclusive -->
+              <div class="promo-card exclusive">
+                <div class="promo-ribbon exclusive">VIP Only</div>
+                <div class="promo-header">
+                  <div class="promo-icon vip">
+                    <i class="fas fa-crown"></i>
+                  </div>
+                  <h4>VIP Loyalty Bonus</h4>
+                </div>
+                <div class="promo-content">
+                  <div class="discount">35% OFF</div>
+                  <p>
+                    Exclusive for our regular customers! Plus complimentary spa
+                    access.
+                  </p>
+                  <div class="promo-details">
+                    <span><i class="fas fa-spa"></i> Free spa access</span>
+                    <span
+                      ><i class="fas fa-wine-glass"></i> Welcome drinks</span
+                    >
+                  </div>
+                </div>
+                <button
+                  class="promo-btn exclusive"
+                  onclick="applyPromo('VIPLOYALTY35')"
+                >
+                  <i class="fas fa-crown"></i>
+                  Claim VIP Offer
+                </button>
+              </div>
+
+              <!-- Seasonal Special -->
+              <div class="promo-card">
+                <div class="promo-header">
+                  <div class="promo-icon seasonal">
+                    <i class="fas fa-leaf"></i>
+                  </div>
+                  <h4>Holiday Season</h4>
+                </div>
+                <div class="promo-content">
+                  <div class="discount">40% OFF</div>
+                  <p>
+                    Celebrate the holidays with us! Special festive packages
+                    available.
+                  </p>
+                  <div class="promo-details">
+                    <span><i class="fas fa-gifts"></i> Holiday activities</span>
+                    <span><i class="fas fa-music"></i> Live entertainment</span>
+                  </div>
+                </div>
+                <button class="promo-btn" onclick="applyPromo('HOLIDAY40')">
+                  <i class="fas fa-ticket-alt"></i>
+                  Apply Promo
+                </button>
+              </div>
+
+              <!-- Honeymoon Package -->
+              <div class="promo-card">
+                <div class="promo-header">
+                  <div class="promo-icon romance">
+                    <i class="fas fa-heart"></i>
+                  </div>
+                  <h4>Romantic Getaway</h4>
+                </div>
+                <div class="promo-content">
+                  <div class="discount">45% OFF</div>
+                  <p>
+                    Perfect for couples! Includes romantic dinner and couples
+                    massage.
+                  </p>
+                  <div class="promo-details">
+                    <span
+                      ><i class="fas fa-glass-cheers"></i> Romantic dinner</span
+                    >
+                    <span><i class="fas fa-spa"></i> Couples massage</span>
+                  </div>
+                </div>
+                <button class="promo-btn" onclick="applyPromo('ROMANCE45')">
+                  <i class="fas fa-ticket-alt"></i>
+                  Apply Promo
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Promo Code Section -->
+          <div class="promo-code-section">
+            <h3>Have a Promo Code?</h3>
+            <div class="promo-code-input">
+              <input
+                type="text"
+                id="promoCodeInput"
+                placeholder="Enter your promo code"
+              />
+              <button onclick="validatePromoCode()">
+                <i class="fas fa-check"></i>
+                Validate
+              </button>
+            </div>
+          </div>
+        </section>
+      </main>
+    </div>
+
+    <!-- JavaScript -->
+    <script src="dashboard-script.js"></script>
+  </body>
+</html>
