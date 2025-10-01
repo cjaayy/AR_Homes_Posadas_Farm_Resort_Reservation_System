@@ -1,133 +1,5 @@
 // ===== DASHBOARD JAVASCRIPT =====
 
-// Test function to verify popup works
-window.testPopup = function () {
-  console.log("🧪 Testing popup functionality...");
-  const popup = document.getElementById("popupContentArea");
-  const content = document.getElementById("popupBody");
-  const title = document.getElementById("popupTitle");
-
-  if (!popup) {
-    console.error("❌ Popup element not found!");
-    return false;
-  }
-
-  if (!content) {
-    console.error("❌ Popup body not found!");
-    return false;
-  }
-
-  if (!title) {
-    console.error("❌ Popup title not found!");
-    return false;
-  }
-
-  console.log("✅ All popup elements found");
-
-  // Set test content
-  title.textContent = "TEST POPUP";
-  content.innerHTML =
-    '<h2 style="color: red;">THIS IS A TEST!</h2><p>If you can see this, the popup is working!</p>';
-
-  // Show popup
-  popup.classList.add("active");
-  popup.style.display = "block";
-
-  console.log("🎯 Popup should be visible now");
-
-  return true;
-};
-
-// Simple popup function - MUST BE FIRST
-function showPopup(section) {
-  console.log("🔍 showPopup called with section:", section);
-
-  const popup = document.getElementById("popupContentArea");
-  const content = document.getElementById("popupBody");
-  const title = document.getElementById("popupTitle");
-
-  console.log("📋 Elements found:", {
-    popup: !!popup,
-    content: !!content,
-    title: !!title,
-  });
-
-  if (!popup || !content || !title) {
-    console.error("❌ Required popup elements not found");
-    alert("Error: Popup elements not found. Check the console.");
-    return;
-  }
-
-  // Clear existing content
-  content.innerHTML = "";
-
-  // Get content based on section
-  let contentHTML = "";
-  let titleText = "";
-
-  console.log("🎯 Processing section:", section);
-
-  // Simplified content loading - try to get content from templates
-  const contentElement = document.getElementById(section + "-content");
-  console.log("� Content element found:", !!contentElement);
-
-  if (contentElement) {
-    titleText = getTitleForSection(section);
-    contentHTML = contentElement.innerHTML;
-    console.log("✅ Got content from template");
-  } else {
-    titleText = "Content Not Available";
-    contentHTML =
-      '<div style="padding: 2rem; text-align: center;"><h3>Section: ' +
-      section +
-      "</h3><p>Content template not found, but popup is working!</p></div>";
-    console.log("⚠️ Using fallback content");
-  }
-
-  console.log("✏️ Setting content:", titleText);
-
-  // Set title and content
-  title.textContent = titleText;
-  content.innerHTML = contentHTML;
-
-  // Show popup with animation
-  popup.classList.add("active");
-  popup.style.display = "block";
-
-  // Update active button
-  document
-    .querySelectorAll(".nav-btn")
-    .forEach((btn) => btn.classList.remove("active"));
-  const targetBtn = document.querySelector(`[data-section="${section}"]`);
-  if (targetBtn) {
-    targetBtn.classList.add("active");
-    console.log("🎯 Updated active button");
-  }
-
-  console.log("✅ Popup should be visible now");
-}
-
-function getTitleForSection(section) {
-  const titles = {
-    dashboard: "Dashboard Overview",
-    "make-reservation": "Make New Reservation",
-    "my-reservations": "My Reservations",
-    promotions: "Special Promotions",
-    profile: "Profile Settings",
-  };
-  return titles[section] || "Unknown Section";
-}
-
-// Close popup function
-function closePopup() {
-  console.log("closePopup called");
-  const popup = document.getElementById("popupContentArea");
-  if (popup) {
-    popup.classList.remove("active");
-    popup.style.display = "none";
-  }
-}
-
 // Load user data from localStorage or use default values
 function loadUserData() {
   const storedUser = localStorage.getItem("currentUser");
@@ -243,31 +115,27 @@ const activityData = [
 ];
 
 // ===== DOM ELEMENTS =====
-// Updated for new popup system - old sidebar and nav-links no longer exist
+const sidebar = document.getElementById("sidebar");
+const navLinks = document.querySelectorAll(".nav-link");
+const contentSections = document.querySelectorAll(".content-section");
 const mobileToggle = document.querySelector(".mobile-toggle");
 
 // ===== INITIALIZATION =====
 document.addEventListener("DOMContentLoaded", function () {
-  console.log("🚀 Dashboard initializing...");
-
   initializeDashboard();
   updateUserData();
   setupEventListeners();
   setupFormValidation();
-
-  // Test if the function is available
-  console.log("🧪 Testing showPopup function:", typeof showPopup);
-
-  // Show dashboard content by default
-  setTimeout(() => {
-    console.log("⏰ Attempting to show default dashboard...");
-    showPopup("dashboard");
-  }, 500);
 });
 
 // ===== DASHBOARD INITIALIZATION =====
 function initializeDashboard() {
-  // The popup system will handle section management
+  // Set default active section
+  showSection("dashboard");
+
+  // Update navigation active state
+  updateActiveNavigation("dashboard");
+
   // Set minimum date for date inputs to today
   const today = new Date().toISOString().split("T")[0];
   const checkInDate = document.getElementById("checkIn");
@@ -378,44 +246,42 @@ function updateProfileForm() {
 
 // ===== NAVIGATION MANAGEMENT =====
 function setupEventListeners() {
-  console.log("🔧 Setting up event listeners...");
-
-  // Set up navigation button click events
-  const navButtons = document.querySelectorAll(".nav-btn");
-  console.log("🔘 Found nav buttons:", navButtons.length);
-
-  navButtons.forEach((button, index) => {
-    console.log(
-      `🎯 Setting up button ${index}:`,
-      button.getAttribute("data-section")
-    );
-    button.addEventListener("click", (e) => {
+  // Navigation links
+  navLinks.forEach((link) => {
+    link.addEventListener("click", function (e) {
       e.preventDefault();
-      console.log("🖱️ Button clicked!", button.getAttribute("data-section"));
-      const section = button.getAttribute("data-section");
-      if (section) {
-        showPopup(section);
+      const section = this.getAttribute("data-section");
+      showSection(section);
+      updateActiveNavigation(section);
+
+      // Close sidebar on mobile after navigation
+      if (window.innerWidth <= 768) {
+        closeSidebar();
       }
     });
   });
 
-  // Set up close popup button
-  const closePopupBtn = document.getElementById("closePopup");
-  console.log("❌ Close popup button found:", !!closePopupBtn);
-  if (closePopupBtn) {
-    closePopupBtn.addEventListener("click", closePopup);
-  }
-
-  // Mobile toggle (if it exists)
+  // Mobile toggle
   if (mobileToggle) {
     mobileToggle.addEventListener("click", toggleSidebar);
   }
 
-  // Handle window resize for responsive behavior
+  // Close sidebar when clicking outside on mobile
+  document.addEventListener("click", function (e) {
+    if (
+      window.innerWidth <= 768 &&
+      !sidebar.contains(e.target) &&
+      !mobileToggle.contains(e.target) &&
+      sidebar.classList.contains("open")
+    ) {
+      closeSidebar();
+    }
+  });
+
+  // Handle window resize
   window.addEventListener("resize", function () {
-    // Handle any responsive behavior if needed
     if (window.innerWidth > 768) {
-      // Reset any mobile-specific states
+      sidebar.classList.remove("open");
     }
   });
 
@@ -442,55 +308,45 @@ function setupEventListeners() {
       }
     });
   }
-
-  // Add ESC key support to close popup
-  document.addEventListener("keydown", function (e) {
-    if (e.key === "Escape") {
-      closePopup();
-    }
-  });
-
-  console.log("✅ Event listeners setup complete");
 }
 
 function showSection(sectionId) {
-  // Use the new popup system instead of the old section switching
-  if (window.popupManager) {
-    window.popupManager.showSection(sectionId);
-  } else {
-    // Fallback: try to initialize popup manager and then show section
-    setTimeout(() => {
-      if (window.popupManager) {
-        window.popupManager.showSection(sectionId);
-      }
-    }, 100);
+  // Hide all sections
+  contentSections.forEach((section) => {
+    section.classList.remove("active");
+  });
+
+  // Show target section
+  const targetSection = document.getElementById(sectionId);
+  if (targetSection) {
+    targetSection.classList.add("active");
   }
+
+  // Scroll to top
+  window.scrollTo({ top: 0, behavior: "smooth" });
 }
 
 function updateActiveNavigation(activeSection) {
-  // Updated for new navigation system
-  // Remove active class from all nav buttons
-  document.querySelectorAll(".nav-btn").forEach((btn) => {
-    btn.classList.remove("active");
+  // Remove active class from all nav items
+  document.querySelectorAll(".nav-item").forEach((item) => {
+    item.classList.remove("active");
   });
 
-  // Add active class to current nav button
-  const activeBtn = document.querySelector(
-    `.nav-btn[data-section="${activeSection}"]`
+  // Add active class to current nav item
+  const activeLink = document.querySelector(
+    `[data-section="${activeSection}"]`
   );
-  if (activeBtn) {
-    activeBtn.classList.add("active");
+  if (activeLink) {
+    activeLink.closest(".nav-item").classList.add("active");
   }
 }
 
 function toggleSidebar() {
-  // No longer needed with new layout, but keeping for compatibility
-  console.log("Sidebar toggle - using new popup system");
+  sidebar.classList.toggle("open");
 }
 
 function closeSidebar() {
-  // No longer needed with new layout, but keeping for compatibility
-  console.log("Sidebar close - using new popup system");
+  sidebar.classList.remove("open");
 }
 
 // ===== FORM MANAGEMENT =====
@@ -506,79 +362,6 @@ function setupFormValidation() {
   if (profileForm) {
     profileForm.addEventListener("submit", handleProfileSubmit);
   }
-}
-
-// Setup form listeners for dynamically loaded content
-function setupDynamicFormListeners() {
-  // Setup any forms that were just loaded in the popup
-  const popupArea = document.getElementById("popupContentArea");
-  if (!popupArea) return;
-
-  // Reservation form in popup
-  const reservationForm = popupArea.querySelector(".reservation-form");
-  if (reservationForm) {
-    // Remove any existing listeners to avoid duplicates
-    reservationForm.replaceWith(reservationForm.cloneNode(true));
-    const newReservationForm = popupArea.querySelector(".reservation-form");
-    newReservationForm.addEventListener("submit", handleReservationSubmit);
-
-    // Setup date validation for reservation form
-    const checkInDate = newReservationForm.querySelector("#checkIn");
-    const checkOutDate = newReservationForm.querySelector("#checkOut");
-
-    if (checkInDate && checkOutDate) {
-      // Set minimum dates
-      const today = new Date().toISOString().split("T")[0];
-      checkInDate.min = today;
-      checkOutDate.min = today;
-
-      checkInDate.addEventListener("change", function () {
-        checkOutDate.min = this.value;
-        if (checkOutDate.value && checkOutDate.value <= this.value) {
-          checkOutDate.value = "";
-        }
-      });
-    }
-  }
-
-  // Profile form in popup
-  const profileForm = popupArea.querySelector(".profile-form");
-  if (profileForm) {
-    // Remove any existing listeners to avoid duplicates
-    profileForm.replaceWith(profileForm.cloneNode(true));
-    const newProfileForm = popupArea.querySelector(".profile-form");
-    newProfileForm.addEventListener("submit", handleProfileSubmit);
-  }
-
-  // Setup any buttons with onclick handlers
-  const promoButtons = popupArea.querySelectorAll(".promo-btn");
-  promoButtons.forEach((btn) => {
-    btn.addEventListener("click", function () {
-      showNotification("Promo code applied successfully!", "success");
-    });
-  });
-
-  // Setup promo code input
-  const promoCodeInput = popupArea.querySelector("#promoCodeInput");
-  if (promoCodeInput) {
-    promoCodeInput.addEventListener("keypress", function (e) {
-      if (e.key === "Enter") {
-        e.preventDefault();
-        validatePromoCode();
-      }
-    });
-  }
-
-  // Setup reservation action buttons
-  const reservationButtons = popupArea.querySelectorAll(
-    ".reservation-actions .btn"
-  );
-  reservationButtons.forEach((btn) => {
-    btn.addEventListener("click", function () {
-      const action = this.textContent.trim();
-      showNotification(`${action} action triggered`, "info");
-    });
-  });
 }
 
 function handleReservationSubmit(e) {
@@ -1158,584 +941,4 @@ document.addEventListener("DOMContentLoaded", function () {
 console.log(
   "%c🎯 Promotions System Loaded",
   "color: #ffd700; font-weight: bold;"
-);
-
-// ===== RESORT GALLERY FUNCTIONALITY =====
-class ResortGallery {
-  constructor() {
-    this.currentSlide = 0;
-    this.slides = [];
-    this.autoPlayInterval = null;
-    this.touchStartX = 0;
-    this.touchEndX = 0;
-    this.isTransitioning = false;
-
-    this.init();
-  }
-
-  init() {
-    this.galleryWrapper = document.getElementById("galleryWrapper");
-    this.prevBtn = document.getElementById("prevBtn");
-    this.nextBtn = document.getElementById("nextBtn");
-    this.indicators = document.getElementById("galleryIndicators");
-
-    if (!this.galleryWrapper) return;
-
-    this.slides = document.querySelectorAll(".gallery-slide");
-    this.totalSlides = this.slides.length;
-
-    this.setupEventListeners();
-    this.startAutoPlay();
-
-    console.log(
-      "%c🖼️ Resort Gallery Initialized",
-      "color: #4CAF50; font-weight: bold;"
-    );
-  }
-
-  setupEventListeners() {
-    // Button controls
-    if (this.prevBtn) {
-      this.prevBtn.addEventListener("click", () => this.prevSlide());
-    }
-    if (this.nextBtn) {
-      this.nextBtn.addEventListener("click", () => this.nextSlide());
-    }
-
-    // Indicator controls
-    if (this.indicators) {
-      this.indicators.addEventListener("click", (e) => {
-        if (e.target.classList.contains("indicator")) {
-          const slideIndex = parseInt(e.target.dataset.slide);
-          this.goToSlide(slideIndex);
-        }
-      });
-    }
-
-    // Touch/swipe events
-    if (this.galleryWrapper) {
-      this.galleryWrapper.addEventListener(
-        "touchstart",
-        (e) => this.handleTouchStart(e),
-        { passive: true }
-      );
-      this.galleryWrapper.addEventListener(
-        "touchmove",
-        (e) => this.handleTouchMove(e),
-        { passive: true }
-      );
-      this.galleryWrapper.addEventListener(
-        "touchend",
-        (e) => this.handleTouchEnd(e),
-        { passive: true }
-      );
-
-      // Mouse events for desktop dragging
-      this.galleryWrapper.addEventListener("mousedown", (e) =>
-        this.handleMouseDown(e)
-      );
-      this.galleryWrapper.addEventListener("mousemove", (e) =>
-        this.handleMouseMove(e)
-      );
-      this.galleryWrapper.addEventListener("mouseup", (e) =>
-        this.handleMouseUp(e)
-      );
-      this.galleryWrapper.addEventListener("mouseleave", (e) =>
-        this.handleMouseUp(e)
-      );
-
-      // Prevent drag on images
-      this.galleryWrapper.addEventListener("dragstart", (e) =>
-        e.preventDefault()
-      );
-    }
-
-    // Pause auto-play on hover
-    const galleryContainer = document.querySelector(".gallery-container");
-    if (galleryContainer) {
-      galleryContainer.addEventListener("mouseenter", () =>
-        this.pauseAutoPlay()
-      );
-      galleryContainer.addEventListener("mouseleave", () =>
-        this.startAutoPlay()
-      );
-    }
-
-    // Keyboard navigation
-    document.addEventListener("keydown", (e) => {
-      if (e.key === "ArrowLeft") this.prevSlide();
-      if (e.key === "ArrowRight") this.nextSlide();
-    });
-  }
-
-  handleTouchStart(e) {
-    this.touchStartX = e.touches[0].clientX;
-    this.pauseAutoPlay();
-  }
-
-  handleTouchMove(e) {
-    this.touchEndX = e.touches[0].clientX;
-  }
-
-  handleTouchEnd(e) {
-    const swipeThreshold = 50;
-    const swipeDistance = this.touchStartX - this.touchEndX;
-
-    if (Math.abs(swipeDistance) > swipeThreshold) {
-      if (swipeDistance > 0) {
-        this.nextSlide();
-      } else {
-        this.prevSlide();
-      }
-    }
-
-    this.startAutoPlay();
-  }
-
-  handleMouseDown(e) {
-    this.isDragging = true;
-    this.touchStartX = e.clientX;
-    this.pauseAutoPlay();
-    this.galleryWrapper.style.cursor = "grabbing";
-  }
-
-  handleMouseMove(e) {
-    if (!this.isDragging) return;
-    this.touchEndX = e.clientX;
-  }
-
-  handleMouseUp(e) {
-    if (!this.isDragging) return;
-
-    this.isDragging = false;
-    this.galleryWrapper.style.cursor = "grab";
-
-    const swipeThreshold = 50;
-    const swipeDistance = this.touchStartX - this.touchEndX;
-
-    if (Math.abs(swipeDistance) > swipeThreshold) {
-      if (swipeDistance > 0) {
-        this.nextSlide();
-      } else {
-        this.prevSlide();
-      }
-    }
-
-    this.startAutoPlay();
-  }
-
-  goToSlide(index) {
-    if (this.isTransitioning || index === this.currentSlide) return;
-
-    this.isTransitioning = true;
-    this.currentSlide = index;
-
-    const translateX = -this.currentSlide * 100;
-    this.galleryWrapper.style.transform = `translateX(${translateX}%)`;
-
-    this.updateIndicators();
-    this.updateSlideStates();
-
-    setTimeout(() => {
-      this.isTransitioning = false;
-    }, 400);
-  }
-
-  nextSlide() {
-    const nextIndex = (this.currentSlide + 1) % this.totalSlides;
-    this.goToSlide(nextIndex);
-  }
-
-  prevSlide() {
-    const prevIndex =
-      (this.currentSlide - 1 + this.totalSlides) % this.totalSlides;
-    this.goToSlide(prevIndex);
-  }
-
-  updateIndicators() {
-    const indicators = document.querySelectorAll(".indicator");
-    indicators.forEach((indicator, index) => {
-      indicator.classList.toggle("active", index === this.currentSlide);
-    });
-  }
-
-  updateSlideStates() {
-    this.slides.forEach((slide, index) => {
-      slide.classList.toggle("active", index === this.currentSlide);
-    });
-  }
-
-  startAutoPlay() {
-    this.pauseAutoPlay();
-    this.autoPlayInterval = setInterval(() => {
-      this.nextSlide();
-    }, 5000); // Change slide every 5 seconds
-  }
-
-  pauseAutoPlay() {
-    if (this.autoPlayInterval) {
-      clearInterval(this.autoPlayInterval);
-      this.autoPlayInterval = null;
-    }
-  }
-
-  destroy() {
-    this.pauseAutoPlay();
-    // Remove event listeners if needed
-  }
-}
-
-// Initialize gallery when DOM is loaded
-document.addEventListener("DOMContentLoaded", () => {
-  // Wait a bit for other initializations to complete
-  setTimeout(() => {
-    window.resortGallery = new ResortGallery();
-  }, 100);
-});
-
-console.log("%c🖼️ Gallery System Ready", "color: #2196F3; font-weight: bold;");
-
-// ===== POPUP CONTENT SYSTEM =====
-class PopupContentManager {
-  constructor() {
-    this.popupArea = null;
-    this.popupTitle = null;
-    this.popupBody = null;
-    this.closeBtn = null;
-    this.navButtons = [];
-    this.currentSection = null;
-
-    this.init();
-  }
-
-  init() {
-    console.log("🔧 Initializing PopupContentManager...");
-    this.popupArea = document.getElementById("popupContentArea");
-    this.popupTitle = document.getElementById("popupTitle");
-    this.popupBody = document.getElementById("popupBody");
-    this.closeBtn = document.getElementById("closePopup");
-    this.navButtons = document.querySelectorAll(".nav-btn");
-
-    console.log("📋 Elements found:", {
-      popupArea: !!this.popupArea,
-      popupTitle: !!this.popupTitle,
-      popupBody: !!this.popupBody,
-      closeBtn: !!this.closeBtn,
-      navButtons: this.navButtons.length,
-    });
-
-    if (!this.popupArea) {
-      console.error("❌ Popup area not found!");
-      return;
-    }
-
-    this.setupEventListeners();
-    this.loadSectionContent("dashboard"); // Load default content
-
-    console.log(
-      "%c🚀 Popup Content System Initialized",
-      "color: #4CAF50; font-weight: bold;"
-    );
-  }
-
-  setupEventListeners() {
-    console.log("🎯 Setting up event listeners...");
-
-    // Navigation button clicks
-    console.log(`Found ${this.navButtons.length} navigation buttons`);
-    this.navButtons.forEach((btn, index) => {
-      console.log(
-        `Setting up listener for button ${index}:`,
-        btn.dataset.section
-      );
-      btn.addEventListener("click", (e) => {
-        console.log("🖱️ Navigation button clicked:", btn.dataset.section);
-        const section = btn.dataset.section;
-        this.showSection(section);
-        this.setActiveNavButton(btn);
-      });
-    });
-
-    // Close button
-    if (this.closeBtn) {
-      console.log("✅ Setting up close button listener");
-      this.closeBtn.addEventListener("click", () => {
-        console.log("🖱️ Close button clicked");
-        this.hidePopup();
-      });
-    } else {
-      console.log("❌ Close button not found");
-    }
-
-    // Close on overlay click (outside popup content)
-    document.addEventListener("click", (e) => {
-      if (e.target === this.popupArea) {
-        console.log("🖱️ Overlay clicked, hiding popup");
-        this.hidePopup();
-      }
-    });
-
-    // Close on Escape key
-    document.addEventListener("keydown", (e) => {
-      if (e.key === "Escape" && this.popupArea.classList.contains("active")) {
-        console.log("⌨️ Escape key pressed, hiding popup");
-        this.hidePopup();
-      }
-    });
-
-    console.log("✅ Event listeners setup complete");
-  }
-
-  showSection(sectionName) {
-    console.log("📂 Showing section:", sectionName);
-    this.loadSectionContent(sectionName);
-    this.showPopup();
-    this.currentSection = sectionName;
-    console.log("✅ Section shown successfully");
-  }
-
-  loadSectionContent(sectionName) {
-    const contentElement = document.getElementById(`${sectionName}-content`);
-    const titles = {
-      dashboard: "Dashboard Overview",
-      "make-reservation": "Make a Reservation",
-      "my-reservations": "My Reservations",
-      promotions: "Exclusive Promotions",
-      profile: "Profile Settings",
-    };
-
-    if (this.popupTitle) {
-      this.popupTitle.textContent = titles[sectionName] || "AR Homes Resort";
-    }
-
-    if (this.popupBody && contentElement) {
-      this.popupBody.innerHTML = contentElement.innerHTML;
-
-      // Re-initialize any interactive elements if needed
-      this.reinitializeContent(sectionName);
-    }
-  }
-
-  reinitializeContent(sectionName) {
-    // Reinitialize form handlers, etc. based on section
-    switch (sectionName) {
-      case "make-reservation":
-        this.initReservationForm();
-        break;
-      case "profile":
-        this.initProfileForm();
-        break;
-      case "dashboard":
-        this.updateDashboardStats();
-        break;
-    }
-  }
-
-  initReservationForm() {
-    const form = this.popupBody.querySelector(".reservation-form");
-    if (form) {
-      form.addEventListener("submit", (e) => {
-        e.preventDefault();
-        this.handleReservationSubmit(new FormData(form));
-      });
-    }
-  }
-
-  initProfileForm() {
-    const form = this.popupBody.querySelector(".profile-form");
-    if (form) {
-      form.addEventListener("submit", (e) => {
-        e.preventDefault();
-        this.handleProfileUpdate(new FormData(form));
-      });
-    }
-  }
-
-  updateDashboardStats() {
-    // Update stats with current user data
-    const userData = loadUserData();
-
-    const statsElements = {
-      totalReservations: this.popupBody.querySelector("#totalReservations"),
-      pendingReservations: this.popupBody.querySelector("#pendingReservations"),
-      approvedReservations: this.popupBody.querySelector(
-        "#approvedReservations"
-      ),
-      completedStays: this.popupBody.querySelector("#completedStays"),
-    };
-
-    if (statsElements.totalReservations) {
-      statsElements.totalReservations.textContent = userData.totalReservations;
-    }
-    if (statsElements.pendingReservations) {
-      statsElements.pendingReservations.textContent =
-        userData.pendingReservations;
-    }
-    if (statsElements.approvedReservations) {
-      statsElements.approvedReservations.textContent =
-        userData.approvedReservations;
-    }
-    if (statsElements.completedStays) {
-      statsElements.completedStays.textContent = userData.completedStays;
-    }
-  }
-
-  handleReservationSubmit(formData) {
-    // Handle reservation form submission
-    console.log("Reservation submitted:", Object.fromEntries(formData));
-
-    // Show success message
-    this.showSuccessMessage("Reservation submitted successfully!");
-
-    // Optionally close popup after success
-    setTimeout(() => {
-      this.hidePopup();
-    }, 2000);
-  }
-
-  handleProfileUpdate(formData) {
-    // Handle profile update
-    console.log("Profile updated:", Object.fromEntries(formData));
-
-    // Update user name in header
-    const userName = formData.get("firstName") + " " + formData.get("lastName");
-    const userNameElements = document.querySelectorAll(
-      "#userName, #welcomeUserName"
-    );
-    userNameElements.forEach((el) => {
-      if (el) el.textContent = userName;
-    });
-
-    this.showSuccessMessage("Profile updated successfully!");
-  }
-
-  showSuccessMessage(message) {
-    // Create and show success notification
-    const notification = document.createElement("div");
-    notification.className = "success-notification";
-    notification.innerHTML = `
-      <i class="fas fa-check-circle"></i>
-      <span>${message}</span>
-    `;
-
-    // Add notification styles
-    notification.style.cssText = `
-      position: fixed;
-      top: 20px;
-      right: 20px;
-      background: linear-gradient(135deg, #4CAF50, #45a049);
-      color: white;
-      padding: 1rem 1.5rem;
-      border-radius: 8px;
-      display: flex;
-      align-items: center;
-      gap: 0.5rem;
-      z-index: 9999;
-      animation: slideInRight 0.3s ease;
-      box-shadow: 0 4px 15px rgba(0,0,0,0.2);
-    `;
-
-    document.body.appendChild(notification);
-
-    // Remove after 3 seconds
-    setTimeout(() => {
-      notification.style.animation = "slideOutRight 0.3s ease";
-      setTimeout(() => {
-        document.body.removeChild(notification);
-      }, 300);
-    }, 3000);
-  }
-
-  showPopup() {
-    if (this.popupArea) {
-      this.popupArea.classList.add("active");
-      document.body.style.overflow = "hidden";
-    }
-  }
-
-  hidePopup() {
-    if (this.popupArea) {
-      this.popupArea.classList.remove("active");
-      document.body.style.overflow = "";
-      this.resetActiveNavButton();
-    }
-  }
-
-  setActiveNavButton(activeBtn) {
-    this.navButtons.forEach((btn) => btn.classList.remove("active"));
-    activeBtn.classList.add("active");
-  }
-
-  resetActiveNavButton() {
-    this.navButtons.forEach((btn) => btn.classList.remove("active"));
-    // Optionally set a default active button
-    const dashboardBtn = document.querySelector('[data-section="dashboard"]');
-    if (dashboardBtn) {
-      dashboardBtn.classList.add("active");
-    }
-  }
-}
-
-// Initialize popup system when DOM is loaded
-document.addEventListener("DOMContentLoaded", () => {
-  console.log("🚀 DOM loaded, starting initialization...");
-
-  // First, let's check if basic elements exist
-  const navButtons = document.querySelectorAll(".nav-btn");
-  const popupArea = document.getElementById("popupContentArea");
-
-  console.log("🔍 Found elements:", {
-    navButtons: navButtons.length,
-    popupArea: !!popupArea,
-  });
-
-  // Add immediate click listeners to test
-  navButtons.forEach((btn, index) => {
-    console.log(`🔧 Setting up button ${index}: ${btn.dataset.section}`);
-    btn.onclick = function () {
-      console.log(`✅ Button ${index} clicked: ${btn.dataset.section}`);
-      alert(`Button clicked: ${btn.dataset.section}`);
-    };
-  });
-
-  setTimeout(() => {
-    try {
-      window.popupManager = new PopupContentManager();
-      console.log("✅ Popup manager initialized successfully");
-    } catch (error) {
-      console.error("❌ Error initializing popup manager:", error);
-    }
-  }, 150);
-});
-
-// Add CSS animations for notifications
-const notificationStyles = document.createElement("style");
-notificationStyles.textContent = `
-  @keyframes slideInRight {
-    from {
-      transform: translateX(100%);
-      opacity: 0;
-    }
-    to {
-      transform: translateX(0);
-      opacity: 1;
-    }
-  }
-  
-  @keyframes slideOutRight {
-    from {
-      transform: translateX(0);
-      opacity: 1;
-    }
-    to {
-      transform: translateX(100%);
-      opacity: 0;
-    }
-  }
-`;
-document.head.appendChild(notificationStyles);
-
-console.log(
-  "%c🎯 Popup Content System Ready",
-  "color: #9C27B0; font-weight: bold;"
 );
